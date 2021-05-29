@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mybatis的核心配置文件mybatis-config.xml(文件名可以自定义) -->
+<mapper namespace="com.wq.dao.StudentMapper">
+<!--    <select id="getStudents" resultType="student">-->
+<!--        select * from student-->
+<!--    </select>-->
+    <!-- 思路2 [联表查询方式] 按照查询嵌套处理-->
+    <select id="getStudents2" resultMap="StudentTeacher2">
+        <!-- 给字段起了别名 s.id sid, s.name sname,t.name tname-->
+        select s.id sid, s.name sname, t.name tname
+        from student s, teacher t
+        where s.tid = t.id
+    </select>
+    <resultMap id="StudentTeacher2" type="Student">
+        <!-- 给字段起了别名 s.id sid, s.name sname,t.name tname-->
+        <!-- resultMap要使用字段的别名定义 -->
+        <result column="sid" property="id"/>
+        <result column="sname" property="name"/>
+        <association property="teacher" javaType="Teacher">
+            <!-- 这里没有定义 所以查询出来 id都为0 -->
+            <result column="tname" property="name"/>
+        </association>
+    </resultMap>
+
+
+    <select id="getStudents" resultMap="StudentTeacher">
+        select * from student
+    </select>
+    <!-- 现在如何实现新的需求?[子查询方式]
+         思路:使用resultMap
+         1.查询所有的学生
+         2.根据学生的tid 寻找对应的老师
+    -->
+    <!-- id是结果映射的名字 用于返回类型resultMap
+         type因为在核心配置文件里扫描过包,所以不用全限定名
+    -->
+    <resultMap id="StudentTeacher" type="Student">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <!-- 这里 学生有一个属性是 老师 对象
+             需要进行复杂的对象属性的映射
+             对象: association
+             集合: collection
+        -->
+        <!-- column property同上
+             javaType要指定这个属性的类型 因为在核心配置文件里扫描过包,所以不用全限定名
+             视频里直接返回了一个老师对象, 可以只返回一个 字段
+        -->
+        <association column="tid" property="teacher" javaType="Teacher" select="getTeacher"/>
+<!--        <association column="tid" property="teacher" javaType="java.lang.String" select="getTeacher"/>-->
+    </resultMap>
+    <select id="getTeacher" resultType="Teacher">
+        <!-- 这里因为只有一个参数#{}可以写任何东西 -->
+        select * from teacher where id=#{id}
+    </select>
+<!--    <select id="getTeacher" resultType="java.lang.String">-->
+<!--        select name from teacher where id=#{tid}-->
+<!--    </select>-->
+
+</mapper>

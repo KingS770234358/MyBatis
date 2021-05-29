@@ -1,0 +1,42 @@
+16:36:06,833 DEBUG ConfigurationFactory:73 - Configuring ehcache from file: .\src\main\resources\ehcache_custom.xml
+16:36:06,837 DEBUG ConfigurationFactory:150 - Configuring ehcache from InputStream
+16:36:06,897 DEBUG BeanHandler:271 - Ignoring ehcache attribute xmlns:xsi
+16:36:06,898 DEBUG BeanHandler:271 - Ignoring ehcache attribute xsi:noNamespaceSchemaLocation
+16:36:06,900 DEBUG DiskStoreConfiguration:141 - Disk Store Path: D:\IDEA\workspace\ehcache
+16:36:06,917 DEBUG CacheManager:1036 - Creating new CacheManager with config file: ./src/main/resources/ehcache_custom.xml
+16:36:06,923 DEBUG PropertyUtil:88 - propertiesString is null.
+16:36:06,933 DEBUG ConfigurationHelper:185 - No CacheManagerEventListenerFactory class specified. Skipping...
+16:36:07,164 DEBUG Cache:955 - No BootstrapCacheLoaderFactory class specified. Skipping...
+16:36:07,165 DEBUG Cache:929 - CacheWriter factory not configured. Skipping...
+16:36:07,166 DEBUG ConfigurationHelper:96 - No CacheExceptionHandlerFactory class specified. Skipping...
+16:36:07,171 DEBUG Cache:955 - No BootstrapCacheLoaderFactory class specified. Skipping...
+16:36:07,171 DEBUG Cache:929 - CacheWriter factory not configured. Skipping...
+16:36:07,171 DEBUG ConfigurationHelper:96 - No CacheExceptionHandlerFactory class specified. Skipping...
+16:36:07,171 DEBUG Cache:955 - No BootstrapCacheLoaderFactory class specified. Skipping...
+16:36:07,172 DEBUG Cache:929 - CacheWriter factory not configured. Skipping...
+16:36:07,173 DEBUG ConfigurationHelper:96 - No CacheExceptionHandlerFactory class specified. Skipping...
+16:36:07,196 DEBUG MemoryStore:152 - Initialized net.sf.ehcache.store.MemoryStore for test
+16:36:07,201 DEBUG DiskStorePathManager:169 - Using diskstore path D:\IDEA\workspace\ehcache
+16:36:07,201 DEBUG DiskStorePathManager:170 - Holding exclusive lock on D:\IDEA\workspace\ehcache\.ehcache-diskstore.lock
+16:36:07,202 DEBUG DiskStorageFactory:860 - Failed to delete file test.index
+16:36:07,209 DEBUG DiskStorageFactory:168 - Matching data file missing (or empty) for index file. Deleting index file D:\IDEA\workspace\ehcache\test.index
+16:36:07,209 DEBUG DiskStorageFactory:860 - Failed to delete file test.index
+16:36:07,217 DEBUG Cache:1165 - Initialised cache: test
+16:36:07,217 DEBUG ConfigurationHelper:325 - CacheDecoratorFactory not configured. Skipping for 'test'.
+16:36:07,217 DEBUG ConfigurationHelper:354 - CacheDecoratorFactory not configured for defaultCache. Skipping for 'test'.
+16:36:07,218 DEBUG MemoryStore:152 - Initialized net.sf.ehcache.store.MemoryStore for com.wq.dao.UserMapper
+16:36:07,219 DEBUG DiskStorageFactory:860 - Failed to delete file com%002ewq%002edao%002e%0055ser%004dapper.index
+16:36:07,220 DEBUG DiskStorageFactory:168 - Matching data file missing (or empty) for index file. Deleting index file D:\IDEA\workspace\ehcache\com%002ewq%002edao%002e%0055ser%004dapper.index
+16:36:07,220 DEBUG DiskStorageFactory:860 - Failed to delete file com%002ewq%002edao%002e%0055ser%004dapper.index
+16:36:07,225 DEBUG Cache:1165 - Initialised cache: com.wq.dao.UserMapper
+16:36:07,226 DEBUG ConfigurationHelper:325 - CacheDecoratorFactory not configured. Skipping for 'com.wq.dao.UserMapper'.
+16:36:07,226 DEBUG ConfigurationHelper:354 - CacheDecoratorFactory not configured for defaultCache. Skipping for 'com.wq.dao.UserMapper'.
+16:36:07,393 DEBUG LogFactory:105 - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+16:36:07,555 DEBUG CacheManager:794 - Attempting to create an existing singleton. Existing singleton returned.
+16:36:08,011 DEBUG Segment:425 - put added 0 on heap
+16:36:08,020 DEBUG Segment:425 - put added 0 on heap
+16:36:08,021 DEBUG Segment:425 - put added 0 on heap
+16:36:08,021 DEBUG Segment:425 - put added 0 on heap
+16:36:08,021 DEBUG Segment:425 - put added 0 on heap
+16:36:08,021 DEBUG Segment:425 - put added 0 on heap
+16:36:08,022 DEBUG Segment:425 - put added 0 on heap

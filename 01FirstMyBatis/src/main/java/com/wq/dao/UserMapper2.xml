@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 这个UserMapper.xml 相当于 UserDao的实现类 -->
+<!-- namespace:绑定一个DAO/Mapper接口 -->
+<mapper namespace="com.wq.dao.UserDao">
+    <!-- 查询语句 -->
+    <!-- id 接口里要实现的方法名
+         resultType/resultMap 返回单个/多个结果
+         · 返回结果要写 [全限定名 ] com.wq.pojo.Teacher
+    -->
+    <select id="getUserList" resultType="com.wq.pojo.Teacher">
+    select id from user
+  </select>
+</mapper>

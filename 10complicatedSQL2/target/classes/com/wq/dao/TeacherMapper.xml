@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mybatis的核心配置文件mybatis-config.xml(文件名可以自定义) -->
+<mapper namespace="com.wq.dao.TeacherMapper">
+    <select id="getTeacher" resultType="Teacher">
+        select * from mybatis.teacher
+    </select>
+    <!-- 还是要使用resultMap -->
+    <!-- 方式一:联表查询方式[按结果嵌套查询] -->
+    <select id="getTeacherStudents" resultMap="TeacherStudents">
+        select s.id sid, s.name sname, t.name tname, t.id tid
+        from student s, teacher t
+        where s.tid = t.id and t.id = #{tid}
+    </select>
+    <!-- 结果映射 -->
+    <resultMap id="TeacherStudents" type="Teacher">
+        <result column="tid" property="id"/>
+        <result column="tname" property="name"/>
+        <!-- 老师还有一个学生列表的属性 用集合实现
+             javaType指定属性类型
+             ofType 用来指定集合(列表)泛型的属性
+        -->
+        <collection property="students" ofType="Student">
+            <result column="sid" property="id" />
+            <result column="sname" property="name" />
+            <result column="tid" property="tid" />
+        </collection>
+    </resultMap>
+
+    <!--=================2子查询方式实现[查询嵌套处理]=======================-->
+    <!-- 理解:最开始取调用getTeacherStudents2方法,但是它的返回结果resultMap里需要先执行另一个select
+         getTeacherStudents2可以将目前执行的结果 传递给select(也就是下面的column="id")
+         select执行完毕后返回了一个集合,所以resultMap中要指定javaType="ArrayList"先接受这个集合
+         ofType="Student"在进一步处理成一个集合返回
+         由此,得到了最终的执行结果
+     -->
+    <select id="getTeacherStudents2" resultMap="TeacherStudents2">
+        <!-- 因为使用了@Param("tid") 所以这里要写成 #{tid}-->
+        select * from teacher where id = #{tid}
+    </select>
+    <!-- 结果映射 -->
+    <resultMap id="TeacherStudents2" type="Teacher">
+        <!-- 这里要指定Teacher的id 否则id为0 -->
+        <result column="id" property="id"/>
+        <!-- ·上面之所以不需要写 javaType="ArrayList" 是因为上面是一个个取出来的 放进集合中
+             ·这里之所以要写 是因为先执行了子查询查到所有的学生,当做一个集合结果返回给上层父语句
+             ·这里column是指上面父层sql语句执行的结果取出id这个column作为 select=getStudentsByTeacherId的参数
+             ·这里property 主要还是和select="getStudentsByTeacherId"语句的执行结果(javaType ofType)对应起来
+        -->
+        <collection property="students" column="id" select="getStudentsByTeacherId" javaType="ArrayList" ofType="Student" />
+    </resultMap>
+    <select id="getStudentsByTeacherId" resultType="Student">
+        select * from student where tid = #{tid}
+    </select>
+</mapper>

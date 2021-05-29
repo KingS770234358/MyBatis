@@ -1,0 +1,1 @@
+17:48:00,354 DEBUG LogFactory:105 - Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.

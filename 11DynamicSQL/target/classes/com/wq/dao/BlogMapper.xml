@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mybatis的核心配置文件mybatis-config.xml(文件名可以自定义) -->
+<mapper namespace="com.wq.dao.BlogMapper">
+    <insert id="addBlog" parameterType="Blog">
+        insert into mybatis.blog(id, title, author, create_time, views)
+        <!-- createTime要使用pojo里类属性名称 -->
+        values(#{id}, #{title}, #{author}, #{createTime}, #{views})
+    </insert>
+
+    <!-- 这里不要忘记返回的数据类型resultType 要设置
+         这里要用resultType 不要用resultMap 因为没有用结果映射
+    -->
+    <select id="queryBlogIF" parameterType="map" resultType="Blog">
+        <!-- 这里的where 1=1是为了防止出现 where后面直接接上AND OR等连接词的情况 -->
+        select * from mybatis.blog where 1=1
+        <!-- 使用动态SQL语句进行拼接
+             test可以理解为尝试进行一次判断
+             test必须填写
+        -->
+        <if test="id!=null">
+            and id=#{id}
+        </if>
+        <if test="title!=null">
+            and title like "%"#{title}"%"
+        </if>
+        <if test="author!=null">
+            and author=#{author}
+        </if>
+        <!-- 这里#{}中的变量名应该跟map设置的一致
+             create_time要和数据库中的一致
+        -->
+        <if test="createTime!=null">
+            and create_time=#{createTime}
+        </if>
+        <if test="views!=null">
+            and id=#{views}
+        </if>
+    </select>
+
+    <select id="queryBlogIF2" parameterType="map" resultType="Blog">
+        <!-- 使用where标签 代替不正规的where 1=1写法
+             (去掉了第一个判断条件前面的and) -->
+        select * from mybatis.blog
+        <where>
+            <if test="id!=null">
+                id=#{id}
+            </if>
+            <if test="title!=null">
+                and title like "%"#{title}"%"
+            </if>
+            <if test="author!=null">
+                and author=#{author}
+            </if>
+        </where>
+    </select>
+
+    <!-- 使用Trim 的 set标签修正sql语句中的逗号
+         返回类型是基本类型 可以忽略
+         主要是update标签不需要returnType
+         [可以只进行部分字段的更新]
+    -->
+    <update id="updateBlogUsingSet" parameterType="map">
+        <!--update blog set title=#{title},author=#{author},create_time=#{createTime},views=#{views} where id=#{id}-->
+        update mybatis.blog
+        <set>
+            <if test="title!=null">
+                title=#{title},
+            </if>
+            <if test="author!=null">
+                author=#{author},
+            </if>
+            <if test="createTime!=null">
+                create_time=#{createTime},
+            </if>
+            <if test="views!=null">
+                views=#{views},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <sql id="queryBlogChoose_choose">
+        <choose>
+            <when test="title!=null">
+                <!-- 使用了where标签 第一个不加and -->
+                title like "%"#{title}"%"
+            </when>
+            <when test="author!=null">
+                and author=#{author}
+            </when>
+            <!-- 不管怎样 都会带上这个条件查询 -->
+            <otherwise>
+                and views=#{views}
+            </otherwise>
+        </choose>
+    </sql>
+    <select id="queryBlogChoose" parameterType="map" resultType="Blog">
+        select * from mybatis.blog
+        <where>
+            <!-- 只会执行最先满足的那个语句,不执行其他语句
+                 当所有的语句都不满足时,会走otherwise语句
+            -->
+            <!-- 引用sql代码片段 -->
+            <include refid="queryBlogChoose_choose"/>
+        </where>
+    </select>
+
+    <!--
+        select * from user where 1=1 and (id=1 OR id=2)
+        传入一个map为参数,map中保存一个数组/列表/list,取名为ids,
+        用一个collection="ids"来接收
+        日志语句Preparing: select * from mybatis.blog WHERE ( id = ? or id = ? )
+     -->
+    <select id="queryBlogForeach" parameterType="map" resultType="Blog">
+        select * from mybatis.blog
+        <where>
+            <foreach collection="ids" index="i" item="id"
+                     open="and (" separator="or" close=")">
+                id = #{id}
+            </foreach>
+        </where>
+    </select>
+    <select id="queryBlogForeach2" parameterType="map" resultType="Blog">
+        select * from mybatis.blog where id in
+        <foreach collection="ids" index="i" item="id"
+                 open="(" separator="," close=")">
+                 #{id}
+        </foreach>
+    </select>
+</mapper>

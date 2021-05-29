@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 这个UserMapper.xml 相当于 UserDao的实现类 -->
+<!-- namespace:绑定一个对应的DAO/Mapper接口 -->
+<mapper namespace="com.wq.dao.StudentMapper">
+    <!-- 完成属性都是单一类型的类的映射 -->
+    <resultMap id="UserMap" type="User">
+<!--        <result column="id" property="id"/>-->
+<!--        <result column="name" property="name"/>-->
+        <!-- 只映射不一样的字段-->
+        <result column="pwd" property="password"/>
+    </resultMap>
+    <!-- 查询语句 -->
+<!--    <select id="getUserList" resultType="User">-->
+<!--        select * from user;-->
+<!--    </select>-->
+    <select id="getUserById" parameterType="int" resultMap="UserMap">
+        <!-- #{} 中的参数名不需要跟接口的形参名一致-->
+        <!--select id, name, pwd as password from user where id = #{idddd};-->
+        select * from user where id = #{idddd};
+    </select>
+
+<!--    &lt;!&ndash; insert不需要returnType参数 &ndash;&gt;-->
+<!--    <insert id="addUser" parameterType="com.wq.pojo.Teacher">-->
+<!--        &lt;!&ndash; User对象中的属性直接取出来 &ndash;&gt;-->
+<!--        &lt;!&ndash; 这里之所以可以使用mybatis.user是因为IDEA连了数据库 &ndash;&gt;-->
+<!--        insert into mybatis.user (id, name, pwd) values (#{id},#{name},#{pwd});-->
+<!--    </insert>-->
+
+<!--    <update id="updateUser" parameterType="com.wq.pojo.Teacher">-->
+<!--        &lt;!&ndash; User对象中的属性直接取出来 &ndash;&gt;-->
+<!--        update mybatis.user set name=#{name},pwd=#{pwd} where id=#{id};-->
+<!--    </update>-->
+
+<!--    <delete id="deleteUser" parameterType="int">-->
+<!--        &lt;!&ndash; User对象中的属性直接取出来 &ndash;&gt;-->
+<!--        delete from mybatis.user where id=#{id};-->
+<!--    </delete>-->
+</mapper>

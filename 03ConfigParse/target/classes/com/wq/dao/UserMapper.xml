@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 这个UserMapper.xml 相当于 UserDao的实现类 -->
+<!-- namespace:绑定一个对应的DAO/Mapper接口 -->
+<mapper namespace="com.wq.dao.StudentMapper">
+    <!-- 查询语句 -->
+    <!-- id namespace对应接口里要实现的方法名
+         resultType/resultMap sql语句的返回值,一般就Class int [返回单个/多个结果]
+         · 返回结果要写 [全限定名 ] com.wq.pojo.Teacher
+         parameterType执行sql语句所需要的参数的类型
+    -->
+    <select id="getUserList" resultType="User">
+        select * from user;
+    </select>
+    <select id="getUserById" parameterType="int" resultType="com.wq.pojo.Teacher">
+        <!-- #{} 中的参数名不需要跟接口的形参名一致-->
+        select * from user where id = #{idddd};
+    </select>
+
+    <!-- insert不需要returnType参数 -->
+    <insert id="addUser" parameterType="com.wq.pojo.Teacher">
+        <!-- User对象中的属性直接取出来 -->
+        <!-- 这里之所以可以使用mybatis.user是因为IDEA连了数据库 -->
+        insert into mybatis.user (id, name, pwd) values (#{id},#{name},#{pwd});
+    </insert>
+
+    <update id="updateUser" parameterType="com.wq.pojo.Teacher">
+        <!-- User对象中的属性直接取出来 -->
+        update mybatis.user set name=#{name},pwd=#{pwd} where id=#{id};
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        <!-- User对象中的属性直接取出来 -->
+        delete from mybatis.user where id=#{id};
+    </delete>
+</mapper>

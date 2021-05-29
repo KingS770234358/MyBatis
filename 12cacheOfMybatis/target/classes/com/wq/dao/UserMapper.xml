@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mybatis的核心配置文件mybatis-config.xml(文件名可以自定义) -->
+<mapper namespace="com.wq.dao.UserMapper">
+
+    <!-- 在当前Mapper.xml中使用二级缓存 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+<!--    <cache-->
+<!--            eviction="FIFO"-->
+<!--            flushInterval="60000"-->
+<!--            size="512"-->
+<!--            readOnly="true"/>-->
+
+    <!-- 只有一个参数paramType可以省略 或者写int的别名:"_int" -->
+    <!-- 核心配置文件中 开启了别名的映射 可以直接使用User -->
+    <select id="getUserById" resultType="User">
+        <!-- #{}中装入的参数名 要和接口 @Param中定义的一致 -->
+        select * from user where id = #{userId}
+    </select>
+    <update id="updateUser" parameterType="User">
+        update mybatis.user set name=#{name},pwd=#{pwd} where id=#{id};
+    </update>
+
+</mapper>

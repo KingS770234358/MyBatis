@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="10complicatedSQL2" />
+        <module name="03ConfigParse" />
+        <module name="09complicatedSQL" />
+        <module name="11DynamicSQL" />
+        <module name="12cacheOfMybatis" />
+        <module name="07Annotation_dev" />
+        <module name="06splitPage" />
+        <module name="04ResultMap" />
+        <module name="01FirstMyBatis" />
+        <module name="08LombokPlugin" />
+        <module name="02CRUD" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

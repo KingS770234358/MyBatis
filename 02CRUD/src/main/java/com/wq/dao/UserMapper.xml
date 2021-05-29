@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 这个UserMapper.xml 相当于 UserDao的实现类 -->
+<!-- namespace:绑定一个对应的DAO/Mapper接口 -->
+<mapper namespace="com.wq.dao.StudentMapper">
+    <!-- 查询语句 -->
+    <!-- id namespace对应接口里要实现的方法名
+         resultType/resultMap sql语句的返回值,一般就Class int [返回单个/多个结果]
+         · 返回结果要写 [全限定名 ] com.wq.pojo.Teacher
+         parameterType执行sql语句所需要的参数的类型
+    -->
+    <select id="getUserList" resultType="com.wq.pojo.Teacher">
+        select * from user;
+    </select>
+    <select id="getUserById" parameterType="int" resultType="com.wq.pojo.Teacher">
+        <!-- #{} 中的参数名不需要跟接口的形参名一致-->
+        select * from user where id = #{idddd};
+    </select>
+    <select id="getUserByIdAndName" parameterType="map" resultType="com.wq.pojo.Teacher">
+        <!-- #{} 中的参数名不需要跟接口的形参名一致-->
+        select * from user where id = #{mapkey1} and name = #{mapkey2};
+    </select>
+    <!-- 模糊查询1 -->
+    <select id="getUserLike" resultType="com.wq.pojo.Teacher">
+        <!-- Sql语句使用通配符写死 -->
+        select * from user where name like "%"#{value}"%";
+    </select>
+    <!-- 模糊查询2 -->
+    <select id="getUserLike2" resultType="com.wq.pojo.Teacher">
+        <!-- java代码执行的时候 传递通配符 -->
+        select * from user where name like #{value};
+    </select>
+
+    <!-- insert不需要returnType参数 -->
+    <insert id="addUser" parameterType="com.wq.pojo.Teacher">
+        <!-- User对象中的属性直接取出来 -->
+        <!-- 这里之所以可以使用mybatis.user是因为IDEA连了数据库 -->
+        insert into mybatis.user (id, name, pwd) values (#{id},#{name},#{pwd});
+    </insert>
+    <!-- insert不需要returnType参数 -->
+    <insert id="addUser2" parameterType="com.wq.pojo.Teacher">
+        <!-- User对象中的属性直接取出来 -->
+        insert into mybatis.user (id, name) values (#{id},#{name});
+    </insert>
+<!--    &lt;!&ndash; insert不需要returnType参数 &ndash;&gt;-->
+<!--    <insert id="addUser3" parameterType="com.wq.pojo.Teacher">-->
+<!--        &lt;!&ndash; 当SQL语句的参数使用类来接收的时候,#{}中的参数名要和类名中的属性一致,-->
+<!--             属性数量可以不一致-->
+<!--         &ndash;&gt;-->
+<!--        insert into mybatis.user (id, name,pwd) values (#{idddd},#{nameeee},#{pwdddd});-->
+<!--    </insert>-->
+    <!-- 使用万能的MAP传参方式:可任意控制参数/属性个数
+         #{}里的参数名要和map的键名一一对应-->
+    <insert id="addUser4" parameterType="map">
+        <!-- User对象中的属性直接取出来 -->
+        insert into mybatis.user (id, name, pwd) values (#{userid},#{username},#{userpwd});
+    </insert>
+
+    <update id="updateUser" parameterType="com.wq.pojo.Teacher">
+        <!-- User对象中的属性直接取出来 -->
+        update mybatis.user set name=#{name},pwd=#{pwd} where id=#{id};
+    </update>
+
+    <update id="deleteUser" parameterType="int">
+        <!-- User对象中的属性直接取出来 -->
+        delete from mybatis.user where id=#{id};
+    </update>
+</mapper>

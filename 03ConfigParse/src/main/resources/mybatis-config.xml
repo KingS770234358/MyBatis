@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- mybatis的核心配置文件mybatis-config.xml(文件名可以自定义) -->
+<configuration>
+    <!--*********************properties************************-->
+    <!-- 实现引用resource目录下的配置文件.properties
+         1.属性都是可外部配置且可动态替换的
+         既可以在典型的Java属性文件中配置 db.properties
+         也可以通过properties元素的子元素来传递
+    -->
+    <properties resource="database.properties">
+        <!-- 2.可以在 .properties 声明一些变量, 这里在定义一些变量 -->
+        <!-- 3.如果.properties文件中定义的变量和这里定义的变量重复 文件中的优先!! -->
+        <property name="sss" value="pppp"/>
+        <!-- 下面还是可以通过${sss}这种形式引用这里定义的property -->
+    </properties>
+
+    <!--*********************Settings************************-->
+    <!-- cacheEnable 缓存是否开启
+         lazyLoadingEnable 全局懒加载开启
+         useGeneratedKeys允许JDBC自动生成组件,但是需要驱动支持
+         mapUnderscoreToCamelCase驼峰命名转换开启
+         数据库中 last_name ===> 实体类中lastName,
+         数据库中用_的原因,oracle将字段lastname全转换成大写LASTNAME
+         logImpl 指定mybatis日志的具体实现,未指定自动查找
+         [LOG4J LOG4J2 JDK_LOGGING COMMONS_LOGGING STDOUT_LOGGING]
+    -->
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <!--*********************typeAliases************************-->
+    <typeAliases>
+        <!-- typeAliases可以为java类型的全限定名设置一个自定义的短的别名
+             别名可在mapper.xml中使用
+             实体类少的时候使用-->
+        <typeAlias type="com.wq.pojo.Teacher" alias="User"/>
+        <!-- package可以扫描一个包,在该包下的所有类,需要使用它的全限定名时
+             可以直接用类名(全大小写都可,建议小写,意味着是package扫描的)
+             实体类多的时候使用(不能自定义别名,
+             但可以通过在实体类上加@Alias(别名)的方式自定义别名)
+        -->
+        <package name="com.wq.pojo"/>
+        <!-- 在mapper.xml数据类型的一些别名 加_是基本类型,不加是他们的包装类型
+             别名     映射的数据类型
+             _byte    byte
+             byte     Byte
+        -->
+    </typeAliases>
+    
+    <!--*********************environments************************-->
+    <!-- environment可以适配多个环境 供选择切换 -->
+    <environments default="test">
+        <!-- id 环境名 -->
+        <environment id="development">
+            <!-- transactionManager 事务管理类型 默认JDBC
+             JDBC:直接使用JDBC的提交和回滚设置 依赖于从数据源得到的连接来管理事务作用域
+             MANAGED:这个配置几乎不做什么,他从来不提交或者回滚一个连接,而是让容器来管理实务的
+             整个生命周期,比如J2EE应用的服务器上下文
+             默认情况下他会关闭连接,然而一些容器(老一套的EJB)并不希望这样,
+             需要将closeConnection属性设置值为false来组织他的默认关闭行为
+             <transactionManager type="MANAGED">
+                <property name="closeConnection" value="false"/>
+             </transactionManager>
+             -->
+            <transactionManager type="JDBC"/>
+            <!-- 数据源c3p0 dbcp druid 负责连接数据库
+                POOL作用:用完可以回收数据库连接,用完一个数据库连接后 不用关闭 放入池子 等待下一个连接的使用请求
+                POOLED:用的多,让外部响应更快
+                UNPOOLED:每次被请求时打开关闭连接慢,但是对于在数据库连接可用性方面没有太高要求
+                JNDI:用的少.
+            -->
+            <dataSource type="POOLED">
+                <!-- mysql数据库驱动 因为在pom.xml中导入了 所以可以使用-->
+                <!--<property name="driver" value="com.mysql.jdbc.Driver"/>-->
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSS=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+        <!-- 会去引用database.properties中的配置 -->
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--***********************mappers************************-->
+    <!-- 每一个Mapper.xml都要在Mybatis核心配置文件中MapperRegistry中注册 -->
+    <mappers>
+        <mapper resource="com/wq/dao/UserMapper.xml"/>
+        <!--        <mapper resource="com/wq/dao/UserMapper2.xml"/>-->
+<!--        <mapper class="com.wq.dao.StudentMapper"/>-->
+    </mappers>
+
+</configuration>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- mybatis的核心配置文件mybatis-config.xml(文件名可以自定义) -->
+<configuration>
+    <!-- 可以定义多个环境 供选择 -->
+    <environments default="development">
+        <!-- id 环境名 -->
+        <environment id="development">
+            <!-- transactionManager 事务管理类型 默认JDBC -->
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- mysql数据库驱动 因为在pom.xml中导入了 所以可以使用-->
+                <!--<property name="driver" value="com.mysql.jdbc.Driver"/>-->
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSS=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!-- 每一个Mapper.xml都要在Mybatis核心配置文件中MapperRegistry中注册 -->
+    <mappers>
+        <mapper resource="com/wq/dao/UserMapper.xml"/>
+<!--        <mapper resource="com/wq/dao/UserMapper2.xml"/>-->
+    </mappers>
+</configuration>
